@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Ground
+  - Obstacle
+  - Dog
+  - Bird
+  - Background
+  - Tree
+  - Cloud
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - obstacle
+  - ground
+  - groundCollider
+  - Dog
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Clouds
+    uniqueID: 3185796981
+    locked: 0
+  - name: Trees
+    uniqueID: 2437170945
+    locked: 0
+  - name: Default
+    uniqueID: 0
+    locked: 0
