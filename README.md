@@ -1,3 +1,3 @@
 # Minimal
 
-This is a repo for my shitty minimal game project
+This is a repo for my minimal game project
