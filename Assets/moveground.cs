@@ -11,6 +11,7 @@ public class moveground : MonoBehaviour
     public GameObject cloud;
     public GameObject tree;
     public GameObject bird;
+    public GameObject bone;
     
     public int cloudSpawnRangeStart;
     public int cloudSpawnRangeEnd;
@@ -28,6 +29,7 @@ public class moveground : MonoBehaviour
         InvokeRepeating("SpawnClouds", 1f, cloudSpawnRate);
         InvokeRepeating("SpawnBirds", 1f, cloudSpawnRate);
         InvokeRepeating("SpawnTrees", 5f, cloudSpawnRate);
+        InvokeRepeating("SpawnBones", 5f, cloudSpawnRate);
 
         StartCoroutine(SpawnObstacle());
 
@@ -43,7 +45,7 @@ public class moveground : MonoBehaviour
         {
             var currSpeed = speed;
                 
-            if (child.CompareTag("Ground")) groundCounter++;
+                 if (child.CompareTag("Ground")) groundCounter++;
             else if (child.CompareTag("Bird")) currSpeed *= 1.2f;
             else if (child.CompareTag("Tree")) currSpeed *= .9f;
             else if (child.CompareTag("Cloud")) currSpeed *= .8f;
@@ -94,5 +96,10 @@ public class moveground : MonoBehaviour
     {
         Instantiate(tree, new Vector3(52, 0), Quaternion.identity, transform);
     }
-    
+
+    private void SpawnBones()
+    {
+        // Todo: Fix spawn position
+        Instantiate(bone, new Vector3(52, 0), Quaternion.identity, transform);
+    }
 }
