@@ -54,11 +54,9 @@ public class moveground : MonoBehaviour
             {
                 case false when child.CompareTag("Cloud") || child.CompareTag("Bird"):
                     body.position += new Vector2(-currSpeed * 0.2f, 0);
-                    // child.position += new Vector3(-currSpeed * 0.2f, 0, 0);
                     break;
                 case true:
                     body.position += new Vector2(-currSpeed, 0);
-                    // child.position += new Vector3(-currSpeed, 0, 0);
                     break;
             }
 
