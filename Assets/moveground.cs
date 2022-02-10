@@ -15,31 +15,18 @@ public class moveground : MonoBehaviour
     
     public int cloudSpawnRangeStart;
     public int cloudSpawnRangeEnd;
-    public float cloudSpawnRate;
 
-    public float _birdSpawnRate;
     public float _birdSpawnRangeEnd;
     public float _birdSpawnRangeStart;
     
     public List<GameObject> obstacles;
 
-    private float _obstacleSpawnRate;
-
-    private void Start()
-    {
-        StartCoroutine(SpawnClouds());
-        StartCoroutine(SpawnBirds());
-    }
-
     public void StartGame()
     {
-        _obstacleSpawnRate = 0;
-        _obstacleSpawnRate = 1.5f;
-        
         InvokeRepeating("SpawnTrees", 5f, 5f);
         InvokeRepeating("SpawnBones", 2f, 2f);
 
-        StartCoroutine(SpawnObstacle());
+        // StartCoroutine(SpawnObstacle());
 
     }
 
@@ -47,23 +34,31 @@ public class moveground : MonoBehaviour
     private void FixedUpdate()
     {
         var groundCounter = 0;
-
+        var obstacleCounter = 0;
+        var cloudCounter = 0;
+        var birdCounter = 0;
+        
         foreach (Transform child in transform)
         {
             var currSpeed = speed;
                 
                  if (child.CompareTag("Ground")) groundCounter++;
-            else if (child.CompareTag("Bird"))   currSpeed *= 1.2f;
-            else if (child.CompareTag("Tree"))   currSpeed *= .9f;
-            else if (child.CompareTag("Cloud"))  currSpeed *= .8f;
-            
+                 else if (child.CompareTag("Tree"))   currSpeed *= .9f;
+                 else if (child.CompareTag("Obstacle")) obstacleCounter++;
+                 else if (child.CompareTag("Bird"))   {currSpeed *= 1.2f; birdCounter++;}
+                 else if (child.CompareTag("Cloud")){  currSpeed *= .8f; cloudCounter++;}
+
+                 var body = child.GetComponent<Rigidbody2D>();
+                 
             switch (GameManager.instance.gameStarted)
             {
                 case false when child.CompareTag("Cloud") || child.CompareTag("Bird"):
-                    child.position += new Vector3(-currSpeed * 0.2f, 0, 0);
+                    body.position += new Vector2(-currSpeed * 0.2f, 0);
+                    // child.position += new Vector3(-currSpeed * 0.2f, 0, 0);
                     break;
                 case true:
-                    child.position += new Vector3(-currSpeed, 0, 0);
+                    body.position += new Vector2(-currSpeed, 0);
+                    // child.position += new Vector3(-currSpeed, 0, 0);
                     break;
             }
 
@@ -73,71 +68,22 @@ public class moveground : MonoBehaviour
         {
             Instantiate(ground, new Vector3(52, -5, 0), Quaternion.identity, transform);
         }
-    }
-    
-    private IEnumerator SpawnObstacle()
-    {
-        var currentTime = 0f;
-        while (true)
+
+        if (obstacleCounter < 2)
         {
+            var index = Random.Range(0, obstacles.Count);
 
-            if (currentTime > _obstacleSpawnRate)
-            {
-                currentTime = 0f;
-
-                var index = Random.Range(0, obstacles.Count);
-
-                Instantiate(obstacles[index], new Vector3(52, 5), Quaternion.identity, transform);
-            }
-
-            currentTime += Time.deltaTime;
-            
-            yield return 0;
+            Instantiate(obstacles[index], new Vector3(52, 5), Quaternion.identity, transform);
         }
-    }
-    
-    private IEnumerator SpawnBirds()
-    {
-        var currentTime = 0f;
-        while (true)
+
+        if (birdCounter < 2)
         {
-            var spawnRate = _birdSpawnRate;
-
-            if (!GameManager.instance.gameStarted) spawnRate *= 5;
-            
-            if (currentTime > spawnRate)
-            {
-                currentTime = 0f;
-
-                Instantiate(bird, new Vector3(52, Random.Range(_birdSpawnRangeStart, _birdSpawnRangeEnd), -1479.249f), Quaternion.identity, transform);
-            }
-
-            currentTime += Time.deltaTime;
-            
-            yield return 0;
+            Instantiate(bird, new Vector3(52, Random.Range(_birdSpawnRangeStart, _birdSpawnRangeEnd), -1479.249f), Quaternion.identity, transform);
         }
-    }
-    
-    private IEnumerator SpawnClouds()
-    {
-        var currentTime = 0f;
-        while (true)
+        
+        if (cloudCounter < 2)
         {
-            
-            var spawnRate = cloudSpawnRate;
-            
-            if (!GameManager.instance.gameStarted) spawnRate *= 5;
-            
-            if (currentTime > spawnRate)
-            {
-                currentTime = 0f;
-
-                Instantiate(cloud, new Vector3(52, Random.Range(cloudSpawnRangeStart, cloudSpawnRangeEnd)), Quaternion.identity, transform);
-            }
-
-            currentTime += Time.deltaTime;
-            
-            yield return 0;
+            Instantiate(cloud, new Vector3(52, Random.Range(cloudSpawnRangeStart, cloudSpawnRangeEnd)), Quaternion.identity, transform);
         }
     }
 

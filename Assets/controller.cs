@@ -11,6 +11,7 @@ public class controller : MonoBehaviour
     private Sensor _sensor;
 
     private bool inAir;
+    private bool justJumped;
     public Animator _legAnimator;
     public Animator _duckAnimator;
     public Animator _tailAnimatori;
@@ -20,6 +21,8 @@ public class controller : MonoBehaviour
     
     public AudioSource barkingSound;
 
+    public GameObject barkingObject;
+    
     private bool _hitWall;
     
     private void OnCollisionEnter2D (Collision2D other)
@@ -49,23 +52,32 @@ public class controller : MonoBehaviour
     void Update()
     {
         if (_hitWall) return;
-        if (_sensor.Sense() && inAir)
+
+        if (!_sensor.Sense()) justJumped = false;
+        
+        if (_sensor.Sense() && inAir && !justJumped)
         {
             _legAnimator.SetTrigger("Landed");
             inAir = false;
         }
 
-        if (!inAir && _sensor.Sense() && Input.GetMouseButton(0))
+        else if (!inAir && _sensor.Sense() && Input.GetMouseButton(0) && !justJumped)
         {
-
+            justJumped = true;
+            
             inAir = true;
-                
+
+            barkingObject.SetActive(true);
+            
+            StartCoroutine(BarkingSoundFlair());
+            
             barkingSound.Play();
                 
             _sensor.Disable(.1f);
-                
+            
             _legAnimator.SetTrigger("Jump");
-                
+            
+            _body.velocity = Vector2.zero;
             _body.AddForce(new Vector2(0, jumpForce));
         }
             
@@ -81,4 +93,18 @@ public class controller : MonoBehaviour
             _tailAnimatori.SetTrigger("Unduck");
         }
     }
+
+    IEnumerator BarkingSoundFlair()
+    {
+        float currentTime = 0;
+        
+        while (currentTime <= 0.5f)
+        {
+            currentTime += Time.deltaTime;
+            yield return 0;
+        }
+
+        barkingObject.SetActive(false);
+    }
+    
 }
