@@ -51,7 +51,7 @@ public class controller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (_hitWall) return;
+        if (_hitWall || !GameManager.instance.gameStarted) return;
 
         if (!_sensor.Sense()) justJumped = false;
         

@@ -39,8 +39,7 @@ public class GameManager : MonoBehaviour
         _score += amount;
 
         var speedMulti = _score / 30;
-        if (speedMulti - lastMulti != 0) Debug.Log(speedMulti - lastMulti);
-        
+
         groundMover.speed += 0.05f * (speedMulti - lastMulti);
 
         lastMulti = speedMulti;
@@ -58,7 +57,7 @@ public class GameManager : MonoBehaviour
         groundMover.StartGame();
         
         DogAnimator.SetBool("GameStarted", true);
-        
+        DogAnimator.SetTrigger("Landed");
     }
     
     public void GameOver()
