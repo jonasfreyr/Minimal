@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class controller : MonoBehaviour
@@ -22,16 +21,18 @@ public class controller : MonoBehaviour
     public AudioSource barkingSound;
 
     public GameObject barkingObject;
+
+    private float _orignalPos;
     
     private bool _hitWall;
     
     private void OnCollisionEnter2D (Collision2D other)
     {
-        if (boxCollider.IsTouching(other.collider))
-        {
-            transform.parent = areaMover;
-            _hitWall = true;
-        }
+        if (!other.gameObject.CompareTag("Obstacle")) return;
+
+        if (Math.Abs(_orignalPos - _body.position.x) < 0.1f) return;
+        transform.parent = areaMover;
+        _hitWall = true;
     }
 
     private void OnDestroy()
@@ -42,10 +43,13 @@ public class controller : MonoBehaviour
     private void Start()
     {
         _body = GetComponent<Rigidbody2D>();
-
+        
+        _orignalPos = _body.position.x;
+        
         var child = transform.Find("GroundSensor");
 
         _sensor = child.GetComponent<Sensor>();
+        
     }
 
     // Update is called once per frame

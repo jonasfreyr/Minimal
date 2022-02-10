@@ -4861,6 +4861,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tree
       objectReference: {fileID: 0}
+    - target: {fileID: 1603645552904744896, guid: 23df3570ee533dd44aaea02591a02176, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6685526670367149966, guid: 23df3570ee533dd44aaea02591a02176, type: 3}
       propertyPath: m_RootOrder
       value: 4
