@@ -11,7 +11,7 @@ public class jumpedOver : MonoBehaviour
     {
         if (other.CompareTag("Dog") && !_jumpedOver)
         {
-            GameManager.instance.score++;
+            GameManager.instance.IncrementScore(1);
             _jumpedOver = true;
         }
     }

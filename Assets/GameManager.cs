@@ -10,7 +10,7 @@ using Scene = UnityEngine.SceneManagement.Scene;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
-    public float score;
+    private int _score;
 
     public GameObject gameOver;
     public GameObject gameStart;
@@ -20,9 +20,9 @@ public class GameManager : MonoBehaviour
     
     public Animator DogAnimator;
     
-    public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI _scoreText;
 
-    public bool gameStarted = false;
+    public bool gameStarted;
     
     private void Awake()
     {
@@ -31,14 +31,24 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        score = 0;
+        _score = 0;
+        _scoreText.text = "Score: " + _score;
     }
+    
 
-    private void Update()
+    public void IncrementScore(int amount)
     {
-        scoreText.text = "Score: " + (int) score;
-    }
+        _score += amount;
 
+        if (_score % 30 == 0 && _score >= 30)
+        {
+            groundMover.speed += 0.01f;
+            
+            Debug.Log("yo");
+        }
+        _scoreText.text = "Score: " + _score;
+    }
+    
     public void GameStart()
     {
         Time.timeScale = 1f;
@@ -64,5 +74,4 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
-    
 }

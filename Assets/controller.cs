@@ -18,17 +18,19 @@ public class controller : MonoBehaviour
     public BoxCollider2D boxCollider;
     public Transform areaMover;
     
-    private AudioSource _barkingSound;
+    public AudioSource barkingSound;
+
+    private bool _hitWall;
     
     private void OnCollisionEnter2D (Collision2D other)
     {
         if (boxCollider.IsTouching(other.collider))
         {
             transform.parent = areaMover;
+            _hitWall = true;
         }
     }
 
-    
     private void OnDestroy()
     {
         GameManager.instance.GameOver();
@@ -36,8 +38,6 @@ public class controller : MonoBehaviour
 
     private void Start()
     {
-        _barkingSound = GetComponent<AudioSource>();
-
         _body = GetComponent<Rigidbody2D>();
 
         var child = transform.Find("GroundSensor");
@@ -48,7 +48,7 @@ public class controller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (_hitWall) return;
         if (_sensor.Sense() && inAir)
         {
             _legAnimator.SetTrigger("Landed");
@@ -59,16 +59,16 @@ public class controller : MonoBehaviour
         {
 
             inAir = true;
-            
-            _barkingSound.Play();
-            
+                
+            barkingSound.Play();
+                
             _sensor.Disable(.1f);
-            
+                
             _legAnimator.SetTrigger("Jump");
-            
+                
             _body.AddForce(new Vector2(0, jumpForce));
         }
-        
+            
         if (Input.GetMouseButtonDown(1))
         {
             _duckAnimator.SetTrigger("Duck");
